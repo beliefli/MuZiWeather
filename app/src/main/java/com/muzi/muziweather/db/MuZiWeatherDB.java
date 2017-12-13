@@ -18,7 +18,7 @@ import java.util.List;
 
 public class MuZiWeatherDB {
     public static final String DB_NAME = "MuZiWheatherSQ";//数据库名称
-    public static final int SQ_VERSION = 1;//数据库版本号
+    public static final int SQ_VERSION = 1;//数据库版本号0
     private SQLiteDatabase db;
     public static MuZiWeatherDB muZiWeatherDB;
 
