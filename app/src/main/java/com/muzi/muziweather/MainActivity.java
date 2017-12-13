@@ -1,15 +1,14 @@
 package com.muzi.muziweather;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,9 +22,6 @@ import com.muzi.muziweather.mode.Province;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import butterknife.Bind;
-import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -51,8 +47,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_main);
-        lv_view=findViewById(R.id.lv_view);
-        textView2=findViewById(R.id.textView2);
+        lv_view = findViewById(R.id.lv_view);
+        textView2 = findViewById(R.id.textView2);
         muZiWeatherDB = MuZiWeatherDB.getInstance(this);
         arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, dataList);
         lv_view.setAdapter(arrayAdapter);
@@ -62,7 +58,15 @@ public class MainActivity extends AppCompatActivity {
                 if (currentLevel == provinceLevel) {
                     selectedProvince = provinceList.get(i);
                     queryCitysData();
+                } else if (currentLevel == cityLevel) {
+                    seletedCity = cityList.get(i);
+                    queryCountiesData();
+                } else if (currentLevel == countyLevel) {
+                    Intent intent = new Intent(MainActivity.this, WeatherActivity.class);
+                    intent.putExtra("county_code", seletedCounty.getCountyCode());
+                    startActivity(intent);
                 }
+
             }
         });
         queryProvincesData(); // 加载省级数据
@@ -100,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
             }
             arrayAdapter.notifyDataSetChanged();
             lv_view.setSelection(0);
+            textView2.setText(selectedProvince.getProviceName());
             currentLevel = cityLevel;
             return;
         }
